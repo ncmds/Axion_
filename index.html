@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axion AI</title>
+    <style>
+        /* Extreme CSS Styling */
+        body {
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1a1a1a, #000);
+            color: #00ffcc;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0, 255, 204, 0.5);
+            border: 2px solid #00ffcc;
+            animation: glow 2s infinite alternate;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+        }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 50px rgba(0, 255, 204, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 70px rgba(0, 255, 204, 0.8);
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            animation: textGlow 1.5s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% {
+                text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            }
+            100% {
+                text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc;
+            }
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 20px;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #00ffcc;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            border-color: #00ff99;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+
+        #chatButton {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: #000;
+            background: #00ffcc;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+            margin-right: 10px;
+        }
+
+        #chatButton:hover {
+            background: #00ff99;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.8);
+            transform: scale(1.1);
+        }
+
+        #restartButton {
+            padding: 15px 30px;
+            font-size: 18px;
+            color: #000;
+            background: #ff0066;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 102, 0.5);
+        }
+
+        #restartButton:hover {
+            background: #ff0044;
+            box-shadow: 0 0 30px rgba(255, 0, 102, 0.8);
+            transform: scale(1.1);
+        }
+
+        #response {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            color: #00ffcc;
+            font-size: 16px;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            word-wrap: break-word;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Background Animation */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 204, 0.1), rgba(0, 0, 0, 0));
+            animation: pulse 5s infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Scrollbar Styling */
+        #response::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #response::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        #response::-webkit-scrollbar-thumb {
+            background: #00ffcc;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 0, 0, 0.3);
+        }
+
+        #response::-webkit-scrollbar-thumb:hover {
+            background: #00ff99;
+        }
+
+        /* Typing Animation */
+        .typing {
+            display: inline-block;
+            animation: typing 1s steps(40, end), blink 0.75s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #00ffcc;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        /* Dynamic Theme Toggle */
+        #themeToggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            color: #00ffcc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #themeToggle:hover {
+            background: #00ffcc;
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+
+        /* Sound Effects */
+        .sound {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            color: #00ffcc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sound:hover {
+            background: #00ffcc;
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+
+        /* Particle Effects */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particles span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 255, 204, 0.5);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5), 0 0 20px rgba(0, 255, 204, 0.5);
+            border-radius: 50%;
+            animation: float 5s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Axion AI</h1>
+        <textarea id="inputText" placeholder="Ask Axion anything..."></textarea>
+        <div>
+            <button id="chatButton">Ask Axion</button>
+            <button id="restartButton">Restart</button>
+        </div>
+        <div id="response"></div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button id="themeToggle">Toggle Theme</button>
+
+    <!-- Sound Effects Button -->
+    <button class="sound" onclick="playSound()">Play Sound</button>
+
+    <!-- Particle Effects -->
+    <div class="particles">
+        <!-- Particles will be generated dynamically -->
+    </div>
+
+    <script>
+        // API Interaction
+        document.getElementById('chatButton').addEventListener('click', function() {
+            const apiKey = 'AIzaSyB6naI9_VkiDbddGdgvCqg3e-XbZFSlGc0'; // Your Gemini API key
+            const text = document.getElementById('inputText').value;
+
+            if (!text) {
+                alert("Please enter a question or prompt!");
+                return;
+            }
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            const requestBody = {
+                contents: [
+                    {
+                        parts: [
+                            { text: text }
+                        ]
+                    }
+                ]
+            };
+
+            // Show typing animation
+            const responseDiv = document.getElementById('response');
+            responseDiv.innerHTML = '<span class="typing">Axion is typing...</span>';
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(`HTTP error! Status: ${response.status}, Message: ${JSON.stringify(err)}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.candidates && data.candidates.length > 0) {
+                    const responseText = data.candidates[0].content.parts[0].text;
+                    responseDiv.innerHTML = responseText;
+                } else {
+                    throw new Error("No candidates found in the response.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                responseDiv.innerHTML = `Failed to fetch response. Error: ${error.message}`;
+            });
+        });
+
+        // Restart Button Functionality
+        document.getElementById('restartButton').addEventListener('click', function() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('response').innerText = '';
+        });
+
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-theme');
+            if (document.body.classList.contains('dark-theme')) {
+                themeToggle.innerText = 'Light Theme';
+                document.body.style.background = 'linear-gradient(135deg, #000, #1a1a1a)';
+            } else {
+                themeToggle.innerText = 'Dark Theme';
+                document.body.style.background = 'linear-gradient(135deg, #1a1a1a, #000)';
+            }
+        });
+
+        // Sound Effects
+        function playSound() {
+            const audio = new Audio('https://www.soundjay.com/button/beep-07.mp3'); // Replace with your sound file
+            audio.play();
+        }
+
+        // Particle Effects
+        const particlesContainer = document.querySelector('.particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('span');
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.animationDuration = `${Math.random() * 5 + 3}s`;
+            particle.style.animationDelay = `${Math.random() * 2}s`;
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+
+</body>
+</html>
